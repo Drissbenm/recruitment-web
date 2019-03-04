@@ -13,7 +13,7 @@ public abstract class Member {
      * An initial sum of money the member has
      */
 
-    public Member(PayStrategy strategy, double wallet, int delai){
+    Member(PayStrategy strategy, double wallet, int delai){
         this.payStrategy = strategy;
         this.wallet = wallet;
         this.delai = delai;
@@ -36,7 +36,7 @@ public abstract class Member {
      */
     public abstract void payBook(int numberOfDays);
 
-    public PayStrategy getPayStrategy() {
+    PayStrategy getPayStrategy() {
         return payStrategy;
     }
 
@@ -44,7 +44,7 @@ public abstract class Member {
         return wallet;
     }
 
-    public void setWallet(double wallet) {
+    void setWallet(double wallet) {
         this.wallet = wallet;
     }
 }

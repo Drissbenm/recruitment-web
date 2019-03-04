@@ -6,7 +6,6 @@ import fr.d2factory.libraryapp.helper.TestHelper;
 import fr.d2factory.libraryapp.library.Library;
 import fr.d2factory.libraryapp.library.LibraryImpl;
 import fr.d2factory.libraryapp.member.Resident;
-import fr.d2factory.libraryapp.strategy.ResidentPayStrategy;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,14 +30,14 @@ public class SecurityHandlerTest {
 
     @Test
     public void memberWithFilledWalletCanBorrowBook(){
-        Resident resident = new Resident(new ResidentPayStrategy(), 100);
+        Resident resident = Resident.getInstanceOfResident(100);
         Book bookToBorrow = books.get(0);
         Assert.assertNotNull(secureLibrary.borrowBook(bookToBorrow.getIsbn(), resident));
     }
 
     @Test(expected = RuntimeException.class)
     public void memberWithEmptyWalletCantBorrowBook(){
-        Resident resident = new Resident(new ResidentPayStrategy(), 0);
+        Resident resident = Resident.getInstanceOfResident(0);
         Book bookToBorrow = books.get(0);
         secureLibrary.borrowBook(bookToBorrow.getIsbn(), resident);
     }

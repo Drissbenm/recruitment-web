@@ -1,30 +1,20 @@
 package fr.d2factory.libraryapp.library;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.d2factory.libraryapp.book.Book;
 import fr.d2factory.libraryapp.book.BookRepository;
 import fr.d2factory.libraryapp.exception.TownsvilleLibraryException;
 import fr.d2factory.libraryapp.helper.TestHelper;
-import fr.d2factory.libraryapp.member.Member;
 import fr.d2factory.libraryapp.member.Resident;
 import fr.d2factory.libraryapp.member.Student;
-import fr.d2factory.libraryapp.strategy.FirstYearStudentPayStrategy;
-import fr.d2factory.libraryapp.strategy.NonFirstYearStudentPayStrategy;
-import fr.d2factory.libraryapp.strategy.ResidentPayStrategy;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 public class LibraryTest {
     private Library library ;
@@ -54,7 +44,7 @@ public class LibraryTest {
         // init library
         initLibrary();
 
-        Member student = new Student(new NonFirstYearStudentPayStrategy(), wallet);
+        Student student = Student.getInstanceOfFirstYearStudent(wallet);
         Book bookToBorrow = books.get(0);
         Book borrowedBook = library.borrowBook(bookToBorrow.getIsbn(), student);
         assertNotNull(borrowedBook);
@@ -66,7 +56,7 @@ public class LibraryTest {
 
         initLibrary();
 
-        Student student = new Student(new NonFirstYearStudentPayStrategy(), wallet);
+        Student student = Student.getInstanceOfFirstYearStudent(wallet);
         Book bookToBorrow = books.get(0);
         // borrow a book the 1st time
         Book borrowedBook = library.borrowBook(bookToBorrow.getIsbn(), student);
@@ -80,7 +70,7 @@ public class LibraryTest {
         // mock book repository
         BookRepository bookRepositoryMock = initLibraryWithBookRepositoryMocked();
 
-        Resident resident = new Resident(new ResidentPayStrategy(), wallet);
+        Resident resident = Resident.getInstanceOfResident(wallet);
         Book bookToBorrow = books.get(0);
         final int NUMBER_OF_DAYS_LEFT = 20;
 
@@ -105,7 +95,7 @@ public class LibraryTest {
     public void studentsPay10CentsTheFirst30days(){
         // mock book repository
         BookRepository bookRepositoryMock = initLibraryWithBookRepositoryMocked();
-        Student student = new Student(new NonFirstYearStudentPayStrategy(), wallet);
+        Student student = Student.getInstanceOfNonFirstYearStudent(wallet);
         Book bookToBorrow = books.get(0);
         final int NUMBER_OF_DAYS_LEFT = 30;
 
@@ -124,7 +114,7 @@ public class LibraryTest {
         // mock book repository
         BookRepository bookRepositoryMock = initLibraryWithBookRepositoryMocked();
 
-        Student firstYearStudent = new Student(new FirstYearStudentPayStrategy(), wallet);
+        Student firstYearStudent = Student.getInstanceOfFirstYearStudent(wallet);
         Book bookToBorrow = books.get(0);
         final int NUMBER_OF_DAYS_LEFT = 15;
 
@@ -143,7 +133,7 @@ public class LibraryTest {
         // mock book repository
         BookRepository bookRepositoryMock = initLibraryWithBookRepositoryMocked();
 
-        Student firstYearStudent = new Student(new FirstYearStudentPayStrategy(), wallet);
+        Student firstYearStudent = Student.getInstanceOfFirstYearStudent(wallet);
         Book bookToBorrow = books.get(0);
         final int NUMBER_OF_DAYS_LEFT = 31;
 
@@ -162,7 +152,7 @@ public class LibraryTest {
        // mock book repository
         BookRepository bookRepositoryMock = initLibraryWithBookRepositoryMocked();
 
-        Resident resident = new Resident(new ResidentPayStrategy(), wallet);
+        Resident resident = Resident.getInstanceOfResident(wallet);
         Book bookToBorrow = books.get(0);
         final int NUMBER_OF_DAYS_LEFT = 80;
 
@@ -181,7 +171,7 @@ public class LibraryTest {
         // mock book repository
         BookRepository bookRepositoryMock = initLibraryWithBookRepositoryMocked();
 
-        Resident resident = new Resident(new ResidentPayStrategy(), wallet);
+        Resident resident = Resident.getInstanceOfResident(wallet);
         Book bookToBorrow = books.get(0);
         Book secondBookToBorrow = books.get(1);
         final int NUMBER_OF_DAYS_LEFT = 80;
